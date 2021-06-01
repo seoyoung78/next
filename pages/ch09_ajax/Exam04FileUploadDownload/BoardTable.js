@@ -1,11 +1,12 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import qs from "qs";
 import { useEffect, useState } from "react";
 import { getBoardList } from "apis/boards";
+import { useRouter } from "next/router";
 
 function BoardTable(props) {
-  const queryString = qs.parse(props.location.search, {ignoreQueryPrefix: true});
-  const pageNo = parseInt(queryString.pageNo) || 1;
+  const router = useRouter()
+  const pageNo = parseInt(router.query.pageNo) || 1;
   const [page, setPage] = useState(null);
 
   const changePageNo = async (pageNo) => {
@@ -30,7 +31,9 @@ function BoardTable(props) {
         {page!=null &&
           <div>
             <div className="mb-3">
-              <Link to="/ch09/exam04/writeForm" className="btn btn-success btn-sm">생성</Link>
+              <Link href="/ch09_ajax/Exam04FileUploadDownload/BoardWriteForm">
+                <a className="btn btn-success btn-sm">생성</a>
+              </Link>
             </div>
             <table className="table table-striped table-bordered">
               <thead>
@@ -47,7 +50,7 @@ function BoardTable(props) {
                   return (
                     <tr key={board.bno}>
                       <td>{board.bno}</td>
-                      <td><Link to={`/ch09/exam04/${board.bno}/read?pageNo=${page.pager.pageNo}`}>{board.btitle}</Link></td>
+                      <td><Link href={`/ch09_ajax/Exam04FileUploadDownload/BoardRead?bno=${board.bno}&pageNo=${page.pager.pageNo}`}><a>{board.btitle}</a></Link></td>
                       <td>{board.bwriter}</td>
                       <td>{new Date(board.bdate).toLocaleDateString()}</td>
                       <td>{board.bhitcount}</td>

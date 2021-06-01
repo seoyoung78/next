@@ -1,9 +1,10 @@
 import { createBoard } from "apis/boards";
+import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 function BoardWriteForm(props) {
+  const router = useRouter()
   const [board, setBoard] = useState({
     btitle: "",
     bcontent: ""
@@ -12,7 +13,6 @@ function BoardWriteForm(props) {
   const inputFile = useRef();
 
   const globalUid = useSelector(state => state.authReducer.uid);
-  const history = useHistory();
 
   const handleAdd = async (event) => {
     event.preventDefault();
@@ -24,7 +24,7 @@ function BoardWriteForm(props) {
       formData.append("bwriter", globalUid);
       formData.append("battach", inputFile.current.files[0]);
       await createBoard(formData);
-      history.goBack();
+      router.back();
     } catch(error) {
       console.log(error);
     }
@@ -38,7 +38,7 @@ function BoardWriteForm(props) {
   };
 
   const handleCancel = (event) => {
-    history.goBack();
+    router.back();
   };
 
   return (

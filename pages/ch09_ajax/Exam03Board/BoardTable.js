@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/router";import qs from "qs";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getBoardList } from "apis/boards";
 

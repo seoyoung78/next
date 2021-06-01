@@ -1,8 +1,10 @@
 import { readBoard, updateBoard } from "apis/boards";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 function BoardUpdateForm(props) {
-  const bno = parseInt(props.match.params.bno);
+  const router = useRouter();
+  const bno = parseInt(router.query.bno);
   const [board, setBoard] = useState({
     bno: "",
     btitle: "",
@@ -33,16 +35,16 @@ function BoardUpdateForm(props) {
     try {
       const dirtyBoard = {...board};
       await updateBoard(dirtyBoard);
-      props.history.goBack();
+      router.back();
     } catch(error) {
       console.log(error);
     }
   };
 
   const handleCancel = (event) => {
-    props.history.goBack();
+    router.back();
   };
-  console.log(board);
+  
   return (
     <div className="card">
       <div className="card-header">

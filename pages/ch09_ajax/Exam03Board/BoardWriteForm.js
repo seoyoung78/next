@@ -1,16 +1,16 @@
 import { createBoardNoAttach } from "apis/boards";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 function BoardWriteForm(props) {
+  const router = useRouter()
   const [board, setBoard] = useState({
     btitle: "",
     bcontent: ""
   });
 
   const globalUid = useSelector(state => state.authReducer.uid);
-  const history = useHistory();
 
   const handleAdd = async (event) => {
     event.preventDefault();
@@ -19,7 +19,7 @@ function BoardWriteForm(props) {
       const newBoard = {...board};
       newBoard.bwriter = globalUid;
       await createBoardNoAttach(newBoard);
-      history.goBack();
+      router.back();
     } catch(error) {
       console.log(error);
     }
@@ -33,7 +33,7 @@ function BoardWriteForm(props) {
   };
 
   const handleCancel = (event) => {
-    history.goBack();
+    router.back();
   };
 
   return (

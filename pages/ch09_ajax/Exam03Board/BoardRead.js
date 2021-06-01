@@ -1,12 +1,12 @@
 import { deleteBoard, readBoard } from "apis/boards";
-import qs from "qs";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 function BoardRead(props) {
-  const bno = parseInt(props.match.params.bno);
-  const queryString = qs.parse(props.location.search, {ignoreQueryPrefix: true});
-  const pageNo = parseInt(queryString.pageNo);
+  const router = useRouter();
+  const bno = parseInt(router.query.bno);
+  const pageNo = parseInt(router.query.pageNo);
   const [board, setBoard] = useState({});
 
   //비동기 호출
@@ -32,7 +32,7 @@ function BoardRead(props) {
     try {
       await deleteBoard(bno);
       //history.push("/ch09/exam03?pageNo=" + pageNo);
-      props.history.goBack();
+      router.back();
     } catch(error) {
       console.log(error);
     }
@@ -58,8 +58,8 @@ function BoardRead(props) {
               <p>battachtype: {board.battachtype}</p>
             </div>
             <div>
-              <Link to={"/ch09/exam03?pageNo=" + pageNo} className="btn btn-info btn-sm mr-2">목록</Link>
-              <Link to={`/ch09/exam03/${board.bno}/updateForm`} className="btn btn-info btn-sm mr-2">수정</Link>
+              <Link href={`/ch09_ajax/Exam03Board/BoardTable?pageNo=${pageNo}`}><a className="btn btn-info btn-sm mr-2">목록</a></Link>
+              <Link href={`/ch09_ajax/Exam03Board/BoardUpdateForm?bno=${bno}`}><a className="btn btn-info btn-sm mr-2">수정</a></Link>
               <button className="btn btn-info btn-sm mr-2" onClick={handleRemove}>삭제</button>
             </div>
           </>
